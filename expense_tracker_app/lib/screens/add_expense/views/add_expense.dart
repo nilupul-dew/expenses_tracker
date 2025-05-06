@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -15,6 +16,20 @@ class _AddExpenseState extends State<AddExpense> {
   TextEditingController categoryConttroller = TextEditingController();
   TextEditingController dateConttroller = TextEditingController();
   DateTime selectDate = DateTime.now();
+
+  List<String> categoryIconList = [
+    'education',
+    'entertainment',
+    'food',
+    'health',
+    'maintenance',
+    'rent',
+    'shopping',
+    'travel',
+  ];
+
+  String iconSelected = '';
+  Color
 
   @override
   void initState() {
@@ -86,86 +101,218 @@ class _AddExpenseState extends State<AddExpense> {
                         showDialog(
                           context: context,
                           builder: (ctx) {
-                            return AlertDialog(
-                              title: Text('Create a Custom Category',textAlign: TextAlign.center, style: TextStyle(fontSize: 20, ),),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  TextFormField(
-                                    //controller: expenseConttroller,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      //prefixIcon: Padding(
-                                      //padding: const EdgeInsets.only(
-                                      //top: 15,
-                                      //left: 15,
-                                      //),
-                                      //child: FaIcon(
-                                      //FontAwesomeIcons.rupeeSign,
-                                      //color: Colors.grey,
-                                      //size: 16,
-                                      //),
-                                      //),
-                                      hintText: 'Category Name',
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                    ),
+                            bool isExpanded = false;
+                            return StatefulBuilder(
+                              builder: (context, setState) {
+                                return AlertDialog(
+                                  backgroundColor: Colors.lightBlue.shade50,
+                                  title: Text(
+                                    'Create a Custom Category',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 20),
                                   ),
-                                  SizedBox(height: 16),
-                                  TextFormField(
-                                    //controller: expenseConttroller,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      //prefixIcon: Padding(
-                                      //padding: const EdgeInsets.only(
-                                      //top: 15,
-                                      //left: 15,
-                                      //),
-                                      //child: FaIcon(
-                                      //FontAwesomeIcons.rupeeSign,
-                                      //color: Colors.grey,
-                                      //size: 16,
-                                      //),
-                                      //),
-                                      hintText: 'Icon',
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 16),
+                                  content: SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        TextFormField(
+                                          //controller: expenseConttroller,
+                                          decoration: InputDecoration(
+                                            isDense: true,
+                                            filled: true,
+                                            fillColor: Colors.white,
 
-                                  TextFormField(
-                                    //controller: expenseConttroller,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      //prefixIcon: Padding(
-                                      //padding: const EdgeInsets.only(
-                                      //top: 15,
-                                      //left: 15,
-                                      //),
-                                      //child: FaIcon(
-                                      //FontAwesomeIcons.rupeeSign,
-                                      //color: Colors.grey,
-                                      //size: 16,
-                                      //),
-                                      //),
-                                      hintText: 'Color',
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                        borderSide: BorderSide.none,
-                                      ),
+                                            hintText: 'Category Name',
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              borderSide: BorderSide.none,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 16),
+                                        TextFormField(
+                                          onTap: () {
+                                            setState(() {
+                                              isExpanded = !isExpanded;
+                                            });
+                                          },
+                                          textAlignVertical:
+                                              TextAlignVertical.center,
+                                          readOnly: true,
+                                          //controller: expenseConttroller,
+                                          decoration: InputDecoration(
+                                            isDense: true,
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            suffixIcon: const Icon(
+                                              CupertinoIcons.chevron_down,
+                                              size: 14,
+                                            ),
+
+                                            hintText: 'Icon',
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  isExpanded
+                                                      ? const BorderRadius.vertical(
+                                                        top: Radius.circular(
+                                                          12,
+                                                        ),
+                                                      )
+                                                      : BorderRadius.circular(
+                                                        12,
+                                                      ),
+                                              borderSide: BorderSide.none,
+                                            ),
+                                          ),
+                                        ),
+                                        isExpanded
+                                            ? Container(
+                                              width:
+                                                  MediaQuery.of(
+                                                    context,
+                                                  ).size.width,
+                                              height: 200,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                      bottom: Radius.circular(
+                                                        12,
+                                                      ),
+                                                    ),
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                  8.0,
+                                                ),
+                                                child: GridView.builder(
+                                                  gridDelegate:
+                                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                                        crossAxisCount: 3,
+                                                        mainAxisSpacing: 5,
+                                                        crossAxisSpacing: 5,
+                                                      ),
+                                                  itemCount:
+                                                      categoryIconList.length,
+                                                  itemBuilder: (
+                                                    context,
+                                                    int i,
+                                                  ) {
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          iconSelected =
+                                                              categoryIconList[i];
+                                                        });
+                                                      },
+                                                      child: Container(
+                                                        width: 50,
+                                                        height: 50,
+                                                        decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                            width: 3,
+                                                            color:
+                                                                iconSelected ==
+                                                                        categoryIconList[i]
+                                                                    ? Colors
+                                                                        .green
+                                                                    : Colors
+                                                                        .grey,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                12,
+                                                              ),
+                                                          image: DecorationImage(
+                                                            image: AssetImage(
+                                                              'assets/${categoryIconList[i]}.png',
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            )
+                                            : Container(),
+
+                                        SizedBox(height: 16),
+
+                                        TextFormField(
+                                          readOnly: true,
+                                          onTap: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx2) {
+                                                return AlertDialog(
+                                                  content: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      ColorPicker(
+                                                        pickerColor:
+                                                            Colors.blue,
+                                                        onColorChanged:
+                                                            (value) {gj},
+                                                      ),
+                                                      SizedBox(
+                                                        width: double.infinity,
+                                                        height: 50,
+                                                        child: TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                              ctx2,
+                                                            );
+                                                          },
+                                                          style: TextButton.styleFrom(
+                                                            backgroundColor:
+                                                                Colors.black,
+                                                            //backgroundColor: Theme.of(context).colorScheme.primary,
+                                                            shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                    12,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                          child: Text(
+                                                            'Save',
+                                                            style: TextStyle(
+                                                              fontSize: 22,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          },
+                                          //controller: expenseConttroller,
+                                          decoration: InputDecoration(
+                                            isDense: true,
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            hintText: 'Color',
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              borderSide: BorderSide.none,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 16),
+                                      ],
                                     ),
                                   ),
-                                  SizedBox(height: 16),
-                                ],
-                              ),
+                                );
+                              },
                             );
                           },
                         );
@@ -193,7 +340,7 @@ class _AddExpenseState extends State<AddExpense> {
                   DateTime? newDate = await showDatePicker(
                     context: context,
                     initialDate: selectDate,
-                    firstDate: DateTime.now(),
+                    firstDate: DateTime.now().subtract(Duration(days: 30)),
                     lastDate: DateTime.now().add(Duration(days: 365)),
                   );
 
