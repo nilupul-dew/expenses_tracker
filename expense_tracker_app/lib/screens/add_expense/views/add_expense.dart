@@ -28,9 +28,6 @@ class _AddExpenseState extends State<AddExpense> {
     'travel',
   ];
 
-  String iconSelected = '';
-  Color
-
   @override
   void initState() {
     dateConttroller.text = DateFormat('dd/MM/yyyy').format(DateTime.now());
@@ -102,6 +99,8 @@ class _AddExpenseState extends State<AddExpense> {
                           context: context,
                           builder: (ctx) {
                             bool isExpanded = false;
+                            String iconSelected = '';
+                            Color categoryColor = Colors.white;
                             return StatefulBuilder(
                               builder: (context, setState) {
                                 return AlertDialog(
@@ -254,18 +253,24 @@ class _AddExpenseState extends State<AddExpense> {
                                                     children: [
                                                       ColorPicker(
                                                         pickerColor:
-                                                            Colors.blue,
-                                                        onColorChanged:
-                                                            (value) {gj},
+                                                            categoryColor,
+                                                        onColorChanged: (
+                                                          value,
+                                                        ) {
+                                                          setState() {
+                                                            categoryColor =
+                                                                value;
+                                                          }
+
+                                                          ;
+                                                        },
                                                       ),
                                                       SizedBox(
                                                         width: double.infinity,
                                                         height: 50,
                                                         child: TextButton(
                                                           onPressed: () {
-                                                            Navigator.pop(
-                                                              ctx2,
-                                                            );
+                                                            Navigator.pop(ctx2);
                                                           },
                                                           style: TextButton.styleFrom(
                                                             backgroundColor:
@@ -298,7 +303,7 @@ class _AddExpenseState extends State<AddExpense> {
                                           decoration: InputDecoration(
                                             isDense: true,
                                             filled: true,
-                                            fillColor: Colors.white,
+                                            fillColor: categoryColor,
                                             hintText: 'Color',
                                             border: OutlineInputBorder(
                                               borderRadius:
@@ -308,6 +313,30 @@ class _AddExpenseState extends State<AddExpense> {
                                           ),
                                         ),
                                         SizedBox(height: 16),
+                                        SizedBox(
+                                          width: double.infinity,
+                                          height: kToolbarHeight,
+                                          child: TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            style: TextButton.styleFrom(
+                                              backgroundColor: Colors.black,
+                                              //backgroundColor: Theme.of(context).colorScheme.primary,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                            ),
+                                            child: Text(
+                                              'Create',
+                                              style: TextStyle(
+                                                fontSize: 22,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
