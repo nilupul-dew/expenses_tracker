@@ -257,12 +257,11 @@ class _AddExpenseState extends State<AddExpense> {
                                                         onColorChanged: (
                                                           value,
                                                         ) {
-                                                          setState() {
+                                                          setState(() {
                                                             categoryColor =
                                                                 value;
-                                                          }
-
-                                                          ;
+                                                                
+                                                          });
                                                         },
                                                       ),
                                                       SizedBox(
@@ -284,7 +283,7 @@ class _AddExpenseState extends State<AddExpense> {
                                                             ),
                                                           ),
                                                           child: Text(
-                                                            'Save',
+                                                            'Add Color',
                                                             style: TextStyle(
                                                               fontSize: 22,
                                                               color:
