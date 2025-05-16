@@ -22,4 +22,14 @@ class CategoryEntity {
       'color': color,
     };
   }
+
+  static CategoryEntity fromDocument(Map<String, dynamic> doc) {
+    return CategoryEntity(
+      categoryId: doc['categoryId'],
+      name: doc['name'],
+      totalExpenses: doc['totalExpenses'],
+      icon: doc['icon'],
+      color: doc['color'],
+    );
+  }
 }
