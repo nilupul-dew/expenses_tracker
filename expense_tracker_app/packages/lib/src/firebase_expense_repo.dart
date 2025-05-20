@@ -12,7 +12,11 @@ class FirebaseExpenseRepo implements ExpenseRepo {
   );
   @override
   Future<void> createCategory(Category category) async {
-    try {await categoryCollection.doc(category.categoryId).set(category.toEntity().toDocment())} catch (e) {
+    try {
+      await categoryCollection
+          .doc(category.categoryId)
+          .set(category.toEntity().toDocment());
+    } catch (e) {
       log(e.toString() as num);
       rethrow;
     }
@@ -20,7 +24,18 @@ class FirebaseExpenseRepo implements ExpenseRepo {
 
   @override
   Future<void> getCategory() async {
-    try {await categoryCollection.get().} catch (e) {
+    try {
+      return await categoryCollection.get().then(
+        (value) =>
+            value.docs
+                .map(
+                  (e) => Category.fromEntity(
+                    CategoryEntity.fromDocument(e.data()),
+                  ),
+                )
+                .toList(),
+      );
+    } catch (e) {
       log(e.toString() as num);
       rethrow;
     }

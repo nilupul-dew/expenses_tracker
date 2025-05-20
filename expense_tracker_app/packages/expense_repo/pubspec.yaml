@@ -1,4 +1,4 @@
-name: expese_repository
+name: expense_repo
 description: The repo that handle expenses
 publish_to : 'none'
 version: 0.0.1
